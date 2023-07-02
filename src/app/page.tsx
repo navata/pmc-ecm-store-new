@@ -107,6 +107,11 @@ export default function Home() {
             Instantly deploy your Next.js site to a shareable URL with Vercel.
           </p>
         </a>
+        <button className="bg-sky-700 px-4 py-2 text-white hover:bg-sky-800 sm:px-8 sm:py-3">
+          ...ABC
+        </button>
+        <div className="p-4 pt-2"></div>
+        <div className="p-4 pt-2">ABC</div>
       </div>
     </main>
   )
