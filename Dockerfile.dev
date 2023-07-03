@@ -1,0 +1,13 @@
+# Config node version
+FROM --platform=$BUILDPLATFORM node:16.20.1
+# Config folder in container
+WORKDIR /pmc-ecm-store
+# Copy all package file into the folder container
+COPY package*.json ./
+# Intall the package
+RUN npm install
+# Copy resource into folder container
+COPY . .
+EXPOSE 3000
+# Run mode development
+CMD ["npm", "run", "dev"]
