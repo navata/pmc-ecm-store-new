@@ -1,13 +1,28 @@
 # Config node version
-FROM --platform=$BUILDPLATFORM node:16.20.1
+FROM --platform=$BUILDPLATFORM node:16.20.1 AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 # Config folder in container
 WORKDIR /pmc-ecm-store
-# Copy all package file into the folder container
-COPY package*.json ./
-# Intall the package
-RUN npm install
 # Copy resource into folder container
 COPY . .
+# Copy all package file into the folder container
+# COPY package*.json ./
+# Intall the package
+# RUN pnpm install --frozen-lockfile
+
+FROM base AS dev-deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+
+# FROM base AS build
+# RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+# RUN pnpm run build
+
+FROM base
+COPY --from=dev-deps /pmc-ecm-store/node_modules /pmc-ecm-store/node_modules
+# COPY --from=build /pmc-ecm-store/dist /pmc-ecm-store/dist
+
 EXPOSE 3000
 # Run mode development
 CMD ["npm", "run", "dev"]

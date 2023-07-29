@@ -137,13 +137,14 @@ const makeRequest = async (props = RequestPropertyInit): Promise<ResponseData> =
 
 export const doRequest = async (requestOption: RequestOption) => {
   const { isAuth, method, headers, params, data, ...requestProperty } = requestOption;
-  let headersCustom: Record<string, any> = {
+  const headersCustom: Record<string, any> = {
     ...headers,
     ...(isAuth && {
       Authorization: `Bearer ${window.localStorage.getItem('access_token')}`,
       'x-access-token': `${window.localStorage.getItem('access_token')}`,
     }),
   };
+  let transformRequest = (dataRequest: any) => dataRequest;
 
   switch (method) {
     case 'GET':
@@ -154,8 +155,6 @@ export const doRequest = async (requestOption: RequestOption) => {
         params: params,
       });
     default:
-      let transformRequest = (dataRequest: any) => dataRequest;
-
       switch (headers?.['Content-Type']) {
         case 'application/json':
           transformRequest = (dataRequest: string) => JSON.stringify(dataRequest);

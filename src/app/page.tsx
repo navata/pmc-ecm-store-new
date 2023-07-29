@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { signIn, signUp, getUser, getAdmin, getAll } from '@/lib/test';
 
 export default function Home() {
