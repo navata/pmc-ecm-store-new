@@ -9,7 +9,6 @@ services:
       - 3000:3000
     command: pnpm run dev
     volumes:
-      - ~/.ssh:/root/.ssh
       - ./:/pmc-ecm-store
       - /pmc-ecm-store/node_modules
       - /pmc-ecm-store/.husky
