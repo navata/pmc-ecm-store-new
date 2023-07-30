@@ -7,7 +7,9 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - 3000:3000
+    command: pnpm run dev
     volumes:
+      - ~/.ssh/id_rsa:/root/.ssh/id_rsa
       - ./:/pmc-ecm-store
       - /pmc-ecm-store/node_modules
       - /pmc-ecm-store/.husky

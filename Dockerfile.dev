@@ -23,6 +23,6 @@ FROM base
 COPY --from=dev-deps /pmc-ecm-store/node_modules /pmc-ecm-store/node_modules
 # COPY --from=build /pmc-ecm-store/dist /pmc-ecm-store/dist
 
-EXPOSE 3000
+# EXPOSE 3000
 # Run mode development
-CMD ["npm", "run", "dev"]
+# CMD ["pnpm", "run", "dev"]
