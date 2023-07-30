@@ -2,6 +2,9 @@
 
 import { signIn, signUp, getUser, getAdmin, getAll } from '@/lib/test';
 
+const a: string = 'nguyen van a';
+console.log(a);
+
 export default function Home() {
   const getMultiUser = () => {
     getAll();
@@ -30,6 +33,7 @@ export default function Home() {
       >
         getUser
       </button>
+      <div>Demo from window</div>
     </main>
   );
 }
