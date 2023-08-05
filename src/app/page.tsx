@@ -1,16 +1,23 @@
 'use client';
 
 import { signIn, signUp, getUser, getAdmin, getAll } from '@/lib/test';
+import { useEffect } from 'react';
 
 const a: string = 'nguyen van a';
 console.log(a);
 
 export default function Home() {
+  useEffect(() => {
+    getMultiUser();
+  }, []);
+
   const getMultiUser = () => {
     getAll();
     getUser();
-    getAdmin();
     getUser();
+    getAdmin();
+    getAdmin();
+    getAdmin();
   };
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">

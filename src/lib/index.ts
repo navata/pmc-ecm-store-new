@@ -53,6 +53,17 @@ const addSubscriber = (subscriber: Record<string, any>) => {
   refreshSubscribers.push(subscriber);
 };
 
+// Execute all api expired
+const executeAndClearSubscriber = (token: string) => {
+  refreshSubscribers.forEach((subscriber) => subscriber.resolve(token));
+  refreshSubscribers = [];
+};
+
+const clearAccessAndRefreshToken = (): void => {
+  window.localStorage.removeItem('access_token');
+  window.localStorage.removeItem('refresh_token');
+};
+
 const refreshToken = async (refreshToken?: string) => {
   try {
     const response = await fetch('http://localhost:8080/api/auth/refreshtoken', {
@@ -64,13 +75,15 @@ const refreshToken = async (refreshToken?: string) => {
     });
     if (response.ok) {
       const data = await response.json();
-      window.localStorage.setItem('access_token', data.accessToken);
-      window.localStorage.setItem('refresh_token', data.refreshToken);
-      refreshSubscribers.forEach((subscriber) => subscriber.resolve(data.accessToken));
-      refreshSubscribers = [];
+      return data;
+      // window.localStorage.setItem('access_token', data.accessToken);
+      // window.localStorage.setItem('refresh_token', data.refreshToken);
+      // refreshSubscribers.forEach((subscriber) => subscriber.resolve(data.accessToken));
+      // refreshSubscribers = [];
     } else if (response.status === 403) {
-      alert('Please login again !');
       // window.location.replace('/');
+      clearAccessAndRefreshToken();
+      alert('Refresh token is expired !');
       throw new Error('Refresh token is expired');
     } else {
       throw new Error('Failed to refresh token');
@@ -108,12 +121,16 @@ const makeRequest = async (props = RequestPropertyInit): Promise<ResponseData> =
     } else if (response.status == HttpStatusCode.UNAUTHORIZED) {
       if (!isRefreshToken) {
         isRefreshToken = true;
-        await refreshToken(window.localStorage.getItem('refresh_token') || '');
+        const dataToken = await refreshToken(window.localStorage.getItem('refresh_token') || '');
+        window.localStorage.setItem('access_token', dataToken.accessToken);
+        window.localStorage.setItem('refresh_token', dataToken.refreshToken);
+        executeAndClearSubscriber(dataToken.accessToken);
+      } else {
+        const retryRequest = new Promise((resolve, reject) => {
+          addSubscriber({ resolve, reject });
+        });
+        await retryRequest;
       }
-      const retryRequest = new Promise((resolve, reject) => {
-        addSubscriber({ resolve, reject });
-      });
-      await retryRequest;
       return await makeRequest({
         ...props,
         headers: {
@@ -141,7 +158,7 @@ export const doRequest = async (requestOption: RequestOption) => {
     ...headers,
     ...(isAuth && {
       Authorization: `Bearer ${window.localStorage.getItem('access_token')}`,
-      'x-access-token': `${window.localStorage.getItem('access_token')}`,
+      'x-access-token': `${window.localStorage.getItem('access_token') || ''}`,
     }),
   };
   let transformRequest = (dataRequest: any) => dataRequest;
