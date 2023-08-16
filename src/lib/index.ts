@@ -161,7 +161,6 @@ export const doRequest = async (requestOption: RequestOption) => {
       'x-access-token': `${window.localStorage.getItem('access_token') || ''}`,
     }),
   };
-  let transformRequest = (dataRequest: any) => dataRequest;
 
   switch (method) {
     case 'GET':
@@ -171,12 +170,11 @@ export const doRequest = async (requestOption: RequestOption) => {
         headers: headersCustom,
         params: params,
       });
-    default:
+    default: {
+      let transformRequest = (dataRequest: any) => dataRequest;
       switch (headers?.['Content-Type']) {
         case 'application/json':
           transformRequest = (dataRequest: string) => JSON.stringify(dataRequest);
-          break;
-        default:
           break;
       }
       return await makeRequest({
@@ -184,7 +182,8 @@ export const doRequest = async (requestOption: RequestOption) => {
         method: method,
         headers: headersCustom,
         data: data,
-        transformRequest: transformRequest,
+        transformRequest,
       });
+    }
   }
 };
