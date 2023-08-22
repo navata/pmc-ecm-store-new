@@ -1,4 +1,4 @@
-import { doRequest } from './index';
+import { doRequest } from './services';
 
 type ResponseData = Record<string, any>;
 

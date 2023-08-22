@@ -96,8 +96,8 @@ const refreshToken = async (refreshToken?: string) => {
 };
 
 const makeRequest = async (props = RequestPropertyInit): Promise<ResponseData> => {
-  const { url, method, params, data, headers, transformRequest } = props;
-  const responseType = props.responseType || 'json';
+  const { url, method, params, data, headers, transformRequest, responseType = 'json' } = props;
+  // const responseType = props.responseType || 'json';
   let resource = url;
   const requestHeaders: Record<string, any> = { ...headers };
   const requestOption: RequestInit = {
@@ -113,10 +113,10 @@ const makeRequest = async (props = RequestPropertyInit): Promise<ResponseData> =
   try {
     const response = await fetch(resource, requestOption);
     if (response.ok) {
-      const responseData = await convertResponse(response, responseType);
+      const data = await convertResponse(response, responseType);
       return {
         success: true,
-        responseData,
+        data,
       };
     } else if (response.status == HttpStatusCode.UNAUTHORIZED) {
       if (!isRefreshToken) {
@@ -158,7 +158,7 @@ export const doRequest = async (requestOption: RequestOption) => {
     ...headers,
     ...(isAuth && {
       Authorization: `Bearer ${window.localStorage.getItem('access_token')}`,
-      'x-access-token': `${window.localStorage.getItem('access_token') || ''}`,
+      // 'x-access-token': `${window.localStorage.getItem('access_token') || ''}`,
     }),
   };
 
@@ -172,7 +172,8 @@ export const doRequest = async (requestOption: RequestOption) => {
       });
     default: {
       let transformRequest = (dataRequest: any) => dataRequest;
-      switch (headers?.['Content-Type']) {
+      const contentType = headers?.['Content-Type'] || 'application/json';
+      switch (contentType) {
         case 'application/json':
           transformRequest = (dataRequest: string) => JSON.stringify(dataRequest);
           break;
