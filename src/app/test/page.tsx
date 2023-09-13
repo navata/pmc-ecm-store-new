@@ -1,6 +1,6 @@
 'use client';
 
-import { useAppConfig } from '@/lib/hooks/common';
+import { useAppConfig } from '@/hooks/common';
 
 export default function Home() {
   // const { cache, ...extraConfig } = useSWRConfig();

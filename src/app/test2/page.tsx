@@ -1,6 +1,6 @@
 'use client';
 
-import { useAppConfig } from '@/lib/hooks/common';
+import { useAppConfig } from '@/hooks/common';
 
 export default function Home() {
   const { data, isLoading, mutate } = useAppConfig();
@@ -16,7 +16,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <button
-        onClick={() => mutate({ data123: {} })}
+        onClick={() => mutate()}
         className="bg-sky-700 px-4 py-2 text-white hover:bg-sky-800 sm:px-8 sm:py-3"
       >
         Test2

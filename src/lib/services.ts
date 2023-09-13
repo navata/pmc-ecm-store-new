@@ -13,7 +13,7 @@ type ResponseType = 'json' | 'text' | 'blob'; // 'arraybuffer' | 'document' | 's
 
 interface RequestProperty {
   url: string;
-  method: 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'POST' | 'PUT';
+  method?: 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'POST' | 'PUT';
   params?: Record<string, any>;
   data?: any;
   headers?: Record<string, any>;
@@ -25,7 +25,7 @@ interface RequestOption extends RequestProperty {
   isAuth?: boolean;
 }
 
-const RequestPropertyInit: RequestProperty = {
+const RequestPropertyInit: RequestOption = {
   url: '',
   method: 'GET',
   transformRequest: (data) => data,
@@ -96,16 +96,30 @@ const refreshToken = async (refreshToken?: string) => {
 };
 
 const makeRequest = async (props = RequestPropertyInit): Promise<ResponseData> => {
-  const { url, method, params, data, headers, transformRequest, responseType = 'json' } = props;
-  // const responseType = props.responseType || 'json';
+  const {
+    url,
+    method,
+    params,
+    data,
+    headers,
+    transformRequest,
+    responseType = 'json',
+    isAuth,
+  } = props;
   let resource = url;
-  const requestHeaders: Record<string, any> = { ...headers };
+  const requestHeaders: Record<string, any> = {
+    ...headers,
+    ...(isAuth && {
+      Authorization: `Bearer ${window.localStorage.getItem('access_token')}`,
+      // 'x-access-token': `${window.localStorage.getItem('access_token') || ''}`,
+    }),
+  };
   const requestOption: RequestInit = {
     method,
     headers: requestHeaders,
   };
   if (method === 'GET' && params) {
-    resource = `${resource}${qs.stringify(params)}`;
+    resource = `${resource}?${qs.stringify(params)}`;
   } else {
     requestOption.body = transformRequest?.(data) || data;
   }
@@ -187,4 +201,39 @@ export const doRequest = async (requestOption: RequestOption) => {
       });
     }
   }
+};
+
+export const getRequest = async (requestOption: RequestOption) => {
+  const { headers, ...requestProperty } = requestOption;
+  const contentTypeDefault = 'application/json';
+  const headersCustom: Record<string, any> = {
+    ...headers,
+    ...{
+      'Content-Type': headers?.['Content-Type'] || contentTypeDefault,
+    },
+  };
+  return await makeRequest({
+    ...requestProperty,
+    method: 'GET',
+    headers: headersCustom,
+  });
+};
+
+export const postRequest = async (requestOption: RequestOption) => {
+  const { headers, transformRequest, ...requestProperty } = requestOption;
+  const transformRequestDefault = (dataRequest: string) => JSON.stringify(dataRequest);
+  const contentTypeDefault = 'application/json';
+  const headersCustom: Record<string, any> = {
+    ...headers,
+    ...{
+      'Content-Type': headers?.['Content-Type'] || contentTypeDefault,
+    },
+  };
+
+  return await makeRequest({
+    ...requestProperty,
+    method: 'POST',
+    headers: headersCustom,
+    transformRequest: transformRequest || transformRequestDefault,
+  });
 };
