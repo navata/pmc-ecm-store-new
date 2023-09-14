@@ -16,6 +16,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@tanstack/react-query": "^4.35.3",
     "@types/node": "20.3.3",
     "@types/qs": "^6.9.7",
     "@types/react": "18.2.14",
