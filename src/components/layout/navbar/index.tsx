@@ -1,6 +1,5 @@
 import { getMainData } from '@/lib/api/common';
 import React from 'react';
-const util = require('util');
 
 export const getGalleryBySlug = (galleries: Record<string, any>[], slug: string) => {
   if (galleries) {
@@ -13,7 +12,7 @@ export default async function Navbar() {
   const { data: mainData } = await getMainData();
   const quickLinkHeader = getGalleryBySlug(mainData?.menus?.data, 'menu-top-vi');
   // console.log(quickLinkHeader);
-  console.log('Dữ liệu cần kiểm tra:', util.inspect(quickLinkHeader, { depth: null }));
+
   // console.debug(JSON.stringify(quickLinkHeader, null, 2));
   return (
     <nav className="fixed left-0 top-0 z-20 w-full bg-sky-700">
