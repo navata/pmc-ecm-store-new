@@ -1,4 +1,6 @@
 import { getMainData } from '@/lib/api/common';
+import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
 export const getGalleryBySlug = (galleries: Record<string, any>[], slug: string) => {
@@ -15,8 +17,8 @@ export default async function Navbar() {
 
   // console.debug(JSON.stringify(quickLinkHeader, null, 2));
   return (
-    <nav className="fixed left-0 top-0 z-20 w-full bg-sky-700">
-      <div className="container mx-auto w-full py-2">
+    <nav className="fixed left-0 top-0 z-20 h-32 w-full bg-sky-700">
+      <div className="container mx-auto w-full max-w-screen-xl py-2">
         <div className="relative flex items-center justify-between py-2">
           <div>
             <p className="text-xs text-white">
@@ -47,23 +49,19 @@ export default async function Navbar() {
           </div>
         </div>
         <div className="relative flex items-center justify-between py-2">
-          <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+          <div className="flex h-14 flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex flex-shrink-0 items-center">
-              <img
-                className="h-12 w-auto"
-                src="https://pmc-ecm-store.dev.pharmacity.io/icons/logo.svg"
-                alt="Your Company"
-              />
+              <Link href="/">
+                <Image src={'/logo.svg'} width={200} height={56} alt="Pharmacity logo" />
+              </Link>
             </div>
-            <div className="hidden sm:ml-6 sm:block">
-              <div className="flex space-x-4">
-                <button
-                  type="button"
-                  className="mb-2 mr-2 rounded-lg border border-gray-300 bg-white px-5 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 "
-                >
-                  Danh mục
-                </button>
-              </div>
+            <div className="flex items-center justify-between sm:ml-6">
+              <button
+                type="button"
+                className="mr-2 rounded-lg border border-gray-300 bg-white px-5 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 "
+              >
+                Danh mục
+              </button>
             </div>
           </div>
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">

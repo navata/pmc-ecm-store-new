@@ -5,7 +5,7 @@ export default function BaseLayout({ children }: { children: React.ReactNode }) 
   return (
     <>
       <Navbar />
-      <div className="container mx-auto pb-4 pt-32">{children}</div>
+      <div className="container mx-auto max-w-screen-xl pb-4 pt-36">{children}</div>
       <Footer />
     </>
   );
