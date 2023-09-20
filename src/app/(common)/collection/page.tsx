@@ -13,7 +13,7 @@ export default function CollectionPage() {
     order_by: 'ASC',
   });
 
-  // console.log(page, 'isLoading', isLoading, 'isValidating', isValidating);
+  console.log(data);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
