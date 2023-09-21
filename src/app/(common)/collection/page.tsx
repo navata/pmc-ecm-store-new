@@ -1,10 +1,13 @@
 'use client';
 
+import { useAppConfig } from '@/hooks/common';
 import { useCollection } from '@/hooks/product';
+import { apiUrls } from '@/utils/apiUrls';
 import { useState } from 'react';
 
 export default function CollectionPage() {
   const [page, setPage] = useState(1);
+  const configData = useAppConfig();
   const { data, isValidating, mutate } = useCollection({
     id: 'Q29sbGVjdGlvbjo5MDg=',
     page: page,
@@ -12,8 +15,6 @@ export default function CollectionPage() {
     sort_by: 'COLLECTION',
     order_by: 'ASC',
   });
-
-  console.log(data);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -51,7 +52,7 @@ export default function CollectionPage() {
         Mutate
       </button>
       {isValidating ? 'isValidating' : 'hello'}
-      {data?.data?.data?.products?.edges?.map?.((item: any) => (
+      {data?.data?.products?.edges?.map?.((item: any) => (
         <div key={item.node.id}>{item.node.name}</div>
       ))}
     </main>

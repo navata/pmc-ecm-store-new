@@ -1,9 +1,8 @@
-import { environments } from '@/config/environments';
+import { environments } from '@/utils/environments';
 import { doRequest, getRequest } from '@/lib/services';
+import { CAppConfigResponse, CMainDataResponse } from '@/types/common';
 
-type ResponseData = Record<string, any>;
-
-export const getAppConfig = async (): Promise<ResponseData> => {
+export const getAppConfig = async (): Promise<CAppConfigResponse> => {
   const response = await doRequest({
     url: `${environments.apiGateway}app/api/config`,
     method: 'GET',
@@ -12,7 +11,7 @@ export const getAppConfig = async (): Promise<ResponseData> => {
   return response;
 };
 
-export const getMainData = async (): Promise<ResponseData> => {
+export const getMainData = async (): Promise<CMainDataResponse> => {
   const response = await getRequest({
     url: `${environments.apiGateway}ecommerce/main`,
   });

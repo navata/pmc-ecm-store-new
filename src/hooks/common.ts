@@ -1,8 +1,7 @@
-import { environments } from '@/config/environments';
-// import { getAppConfig } from '@/lib/api/common';
-import useSWR from 'swr';
+import { useSwrPmc } from './swrPmc';
+import { getAppConfig } from '@/lib/api/common';
 
 export const useAppConfig = () => {
-  const response = useSWR({ url: `${environments.apiGateway}app/api/config`, method: 'GET' });
+  const response = useSwrPmc({ key: 'commonAppConfig' }, getAppConfig);
   return response;
 };

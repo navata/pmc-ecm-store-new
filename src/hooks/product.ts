@@ -1,9 +1,9 @@
-import useSWR from 'swr';
 import { getCollection } from '@/lib/api/product';
-import { SWRKeys } from '@/types/keys';
+import { useSwrPmc } from './swrPmc';
+import { PCollectionParam } from '@/types/product';
 
-export const useCollection = (params: Record<string, any>): Record<string, any> => {
-  const response = useSWR({ key: SWRKeys.ProductCollection, params }, getCollection, {
+export const useCollection = (params: PCollectionParam): Record<string, any> => {
+  const response = useSwrPmc({ key: 'productCollection', params }, getCollection, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,

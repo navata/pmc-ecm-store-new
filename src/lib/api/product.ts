@@ -1,11 +1,10 @@
 import { getRequest } from '@/lib/services';
-import { environments } from '@/config/environments';
+import { apiUrls } from '@/utils/apiUrls';
+import { PCollectionInput, PCollectionResponse } from '@/types/product';
 
-type ResponseData = Record<string, any>;
-
-export const getCollection = async ({ params }: Record<string, any>): Promise<ResponseData> => {
+export const getCollection = async ({ params }: PCollectionInput): Promise<PCollectionResponse> => {
   const response = await getRequest({
-    url: `${environments.apiGateway}api/collection`,
+    url: apiUrls.productCollection,
     params,
   });
 

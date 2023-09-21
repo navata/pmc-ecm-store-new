@@ -1,29 +1,5 @@
 import qs from 'qs';
-
-enum HttpStatusCode {
-  OK = 200,
-  BAD_REQUEST = 400,
-  UNAUTHORIZED = 401,
-  FORBIDDEN = 403,
-  NOT_FOUND = 404,
-}
-
-type ResponseData = Record<string, any>;
-type ResponseType = 'json' | 'text' | 'blob'; // 'arraybuffer' | 'document' | 'stream' --> those type will use when need
-
-interface RequestProperty {
-  url: string;
-  method?: 'CONNECT' | 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'POST' | 'PUT';
-  params?: Record<string, any>;
-  data?: any;
-  headers?: Record<string, any>;
-  transformRequest?: (data: any) => any;
-  responseType?: ResponseType;
-}
-
-interface RequestOption extends RequestProperty {
-  isAuth?: boolean;
-}
+import { RequestOption, ResponseType, HttpStatusCode, ResponseData } from '@/types/services';
 
 const RequestPropertyInit: RequestOption = {
   url: '',
@@ -128,9 +104,10 @@ const makeRequest = async (props = RequestPropertyInit): Promise<ResponseData> =
     const response = await fetch(resource, requestOption);
     if (response.ok) {
       const data = await convertResponse(response, responseType);
+
       return {
+        ...data,
         success: true,
-        data,
       };
     } else if (response.status == HttpStatusCode.UNAUTHORIZED) {
       if (!isRefreshToken) {
@@ -203,6 +180,24 @@ export const doRequest = async (requestOption: RequestOption) => {
   }
 };
 
+export const updateRequestCommon = async (requestOption: RequestOption) => {
+  const { headers, transformRequest, ...requestProperty } = requestOption;
+  const transformRequestDefault = (dataRequest: string) => JSON.stringify(dataRequest);
+  const contentTypeDefault = 'application/json';
+  const headersCustom: Record<string, any> = {
+    ...headers,
+    ...{
+      'Content-Type': headers?.['Content-Type'] || contentTypeDefault,
+    },
+  };
+
+  return await makeRequest({
+    ...requestProperty,
+    headers: headersCustom,
+    transformRequest: transformRequest || transformRequestDefault,
+  });
+};
+
 export const getRequest = async (requestOption: RequestOption) => {
   const { headers, ...requestProperty } = requestOption;
   const contentTypeDefault = 'application/json';
@@ -220,20 +215,22 @@ export const getRequest = async (requestOption: RequestOption) => {
 };
 
 export const postRequest = async (requestOption: RequestOption) => {
-  const { headers, transformRequest, ...requestProperty } = requestOption;
-  const transformRequestDefault = (dataRequest: string) => JSON.stringify(dataRequest);
-  const contentTypeDefault = 'application/json';
-  const headersCustom: Record<string, any> = {
-    ...headers,
-    ...{
-      'Content-Type': headers?.['Content-Type'] || contentTypeDefault,
-    },
-  };
-
-  return await makeRequest({
-    ...requestProperty,
+  return await updateRequestCommon({
+    ...requestOption,
     method: 'POST',
-    headers: headersCustom,
-    transformRequest: transformRequest || transformRequestDefault,
+  });
+};
+
+export const patchRequest = async (requestOption: RequestOption) => {
+  return await updateRequestCommon({
+    ...requestOption,
+    method: 'PATCH',
+  });
+};
+
+export const putRequest = async (requestOption: RequestOption) => {
+  return await updateRequestCommon({
+    ...requestOption,
+    method: 'PUT',
   });
 };

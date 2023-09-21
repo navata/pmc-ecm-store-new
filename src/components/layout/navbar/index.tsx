@@ -11,11 +11,9 @@ export const getGalleryBySlug = (galleries: Record<string, any>[], slug: string)
   return null;
 };
 export default async function Navbar() {
-  const { data: mainData } = await getMainData();
-  const quickLinkHeader = getGalleryBySlug(mainData?.menus?.data, 'menu-top-vi');
-  // console.log(quickLinkHeader);
+  const { menus } = await getMainData();
+  const quickLinkHeader = getGalleryBySlug(menus?.data, 'menu-top-vi');
 
-  // console.debug(JSON.stringify(quickLinkHeader, null, 2));
   return (
     <nav className="fixed left-0 top-0 z-20 h-32 w-full bg-sky-700">
       <div className="container mx-auto w-full max-w-screen-xl py-2">
