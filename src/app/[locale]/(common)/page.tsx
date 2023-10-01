@@ -1,11 +1,8 @@
 import ProductCard from '@/components/product/card';
 import { getI18n } from '@/locales/server';
 
-// const getData = ay
-
 export default async function Home() {
   const t = await getI18n();
-  console.log('t', t);
 
   return (
     <div>
