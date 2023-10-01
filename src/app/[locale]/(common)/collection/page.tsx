@@ -2,12 +2,10 @@
 
 import { useAppConfig } from '@/hooks/common';
 import { useCollection } from '@/hooks/product';
-import { apiUrls } from '@/utils/apiUrls';
 import { useState } from 'react';
 
 export default function CollectionPage() {
   const [page, setPage] = useState(1);
-  const configData = useAppConfig();
   const { data, isValidating, mutate } = useCollection({
     id: 'Q29sbGVjdGlvbjo5MDg=',
     page: page,

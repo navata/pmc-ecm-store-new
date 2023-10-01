@@ -10,27 +10,27 @@ export const metadata = {
 const iCielVAGRoundedNext = localFont({
   src: [
     {
-      path: '../fonts/iCielVAGRoundedNext-ExtraLight.otf',
+      path: '../../fonts/iCielVAGRoundedNext-ExtraLight.otf',
       weight: '200',
     },
     {
-      path: '../fonts/iCielVAGRoundedNext-Light.otf',
+      path: '../../fonts/iCielVAGRoundedNext-Light.otf',
       weight: '300',
     },
     {
-      path: '../fonts/iCielVAGRoundedNext-Regular.otf',
+      path: '../../fonts/iCielVAGRoundedNext-Regular.otf',
       weight: '400',
     },
     {
-      path: '../fonts/iCielVAGRoundedNext-Medium.otf',
+      path: '../../fonts/iCielVAGRoundedNext-Medium.otf',
       weight: '500',
     },
     {
-      path: '../fonts/iCielVAGRoundedNext-DemiBold.otf',
+      path: '../../fonts/iCielVAGRoundedNext-DemiBold.otf',
       weight: '600',
     },
     {
-      path: '../fonts/iCielVAGRoundedNext-Bold.otf',
+      path: '../../fonts/iCielVAGRoundedNext-Bold.otf',
       weight: '700',
     },
   ],

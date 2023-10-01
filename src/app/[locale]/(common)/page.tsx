@@ -1,6 +1,12 @@
 import ProductCard from '@/components/product/card';
+import { getI18n } from '@/locales/server';
 
-export default function Home() {
+// const getData = ay
+
+export default async function Home() {
+  const t = await getI18n();
+  console.log('t', t);
+
   return (
     <div>
       <div className="bg-stripes-fuchsia mb-6 grid grid-flow-col gap-4 ">
@@ -26,7 +32,7 @@ export default function Home() {
           />
         </div>
       </div>
-
+      <p>{t('common.address')}</p>
       <div className="grid grid-cols-6 gap-4">
         {[1, 2, 3, 4, 5, 6].map((item, index) => (
           <ProductCard key={index} />

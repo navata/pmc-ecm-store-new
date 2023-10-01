@@ -1,7 +1,7 @@
 import Footer from '@/components/layout/footer';
 import Navbar from '@/components/layout/navbar';
 
-export default function BaseLayout({ children }: { children: React.ReactNode }) {
+export default async function BaseLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Navbar />
