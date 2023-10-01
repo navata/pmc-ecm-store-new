@@ -2,6 +2,8 @@ import { getMainData } from '@/lib/api/common';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import { getI18n } from '@/locales/server';
+import ChangeLanguage from './ChangeLanguage';
 
 export const getGalleryBySlug = (galleries: Record<string, any>[], slug: string) => {
   if (galleries) {
@@ -13,6 +15,7 @@ export const getGalleryBySlug = (galleries: Record<string, any>[], slug: string)
 export default async function Navbar() {
   const { menus } = await getMainData();
   const quickLinkHeader = getGalleryBySlug(menus?.data, 'menu-top-vi');
+  const t = await getI18n();
 
   return (
     <nav className="fixed left-0 top-0 z-20 h-32 w-full bg-sky-700">
@@ -36,8 +39,9 @@ export default async function Navbar() {
                 </a>
               ))}
             </div>
-            <div className="flex text-xs font-bold text-white">
-              NavaTa
+            <ChangeLanguage />
+            <div className="flex whitespace-break-spaces text-xs text-white">
+              {t('common.welcome', { name: <span className="font-bold">NavaTa</span> })}
               <img
                 className="ml-1 h-5 w-5 rounded-full border"
                 src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
@@ -58,7 +62,7 @@ export default async function Navbar() {
                 type="button"
                 className="mr-2 rounded-lg border border-gray-300 bg-white px-5 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 "
               >
-                Danh mục
+                {t('common.category')}
               </button>
             </div>
           </div>

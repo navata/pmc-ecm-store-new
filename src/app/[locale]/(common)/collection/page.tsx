@@ -1,6 +1,5 @@
 'use client';
 
-import { useAppConfig } from '@/hooks/common';
 import { useCollection } from '@/hooks/product';
 import { useState } from 'react';
 
